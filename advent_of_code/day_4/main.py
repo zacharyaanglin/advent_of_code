@@ -2,7 +2,7 @@
 
 import io
 import os
-from typing import Dict, List
+from typing import Dict, Iterable
 
 
 def read_buf(file_handle: io.StringIO) -> str:
@@ -10,7 +10,7 @@ def read_buf(file_handle: io.StringIO) -> str:
         yield line
 
 
-def combine_lines(lines: List[str]) -> str:
+def combine_lines(lines: Iterable[str]) -> str:
     output_str = ""
     for line in lines:
         if line != "\n":
@@ -22,18 +22,18 @@ def combine_lines(lines: List[str]) -> str:
         yield output_str
 
 
-def process_passport(passport_lines: List[str]) -> Dict:
+def process_passport(passport_lines: Iterable[str]) -> Dict:
     for passport in passport_lines:
         fields = dict(field.split(":") for field in passport.split())
         yield fields
 
 
-def validate_passport_simple(passport_dicts: List[Dict]) -> bool:
+def validate_passport_simple(passport_dicts: Iterable[Dict]) -> bool:
     for passport_dict in passport_dicts:
         yield passport_dict.keys() >= {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}
 
 
-def validate_passport(passport_dicts: List[Dict]) -> bool:
+def validate_passport(passport_dicts: Iterable[Dict]) -> bool:
     for passport_dict in passport_dicts:
         test_val = (
             passport_dict.keys() >= {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"} and
