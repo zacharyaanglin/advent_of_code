@@ -23,26 +23,29 @@ class Seat:
         self.neighbors = list()
         grid = seats.grid
         if self.x > 0:
-            self.neighbors.append(grid[self.x-1][self.y].state)
+            self.neighbors.append(grid[self.x - 1][self.y].state)
         if self.y > 0:
-            self.neighbors.append(grid[self.x][self.y-1].state)
+            self.neighbors.append(grid[self.x][self.y - 1].state)
         if self.x < seats.x_max:
-            self.neighbors.append(grid[self.x+1][self.y].state)
+            self.neighbors.append(grid[self.x + 1][self.y].state)
         if self.y < seats.y_max:
-            self.neighbors.append(grid[self.x][self.y+1].state)
+            self.neighbors.append(grid[self.x][self.y + 1].state)
         if self.x > 0 and self.y > 0:
-            self.neighbors.append(grid[self.x-1][self.y-1].state)
+            self.neighbors.append(grid[self.x - 1][self.y - 1].state)
         if self.x < seats.x_max and self.y < seats.y_max:
-            self.neighbors.append(grid[self.x+1][self.y+1].state)
+            self.neighbors.append(grid[self.x + 1][self.y + 1].state)
         if self.x > 0 and self.y < seats.y_max:
-            self.neighbors.append(grid[self.x-1][self.y+1].state)
+            self.neighbors.append(grid[self.x - 1][self.y + 1].state)
         if self.x < seats.y_max and self.y > 0:
-            self.neighbors.append(grid[self.x+1][self.y-1].state)
+            self.neighbors.append(grid[self.x + 1][self.y - 1].state)
 
     def set_new_state(self):
         if self.state == State.EMPTY and State.OCCUPIED not in self.neighbors:
             self.new_state = State.OCCUPIED
-        elif self.state == State.OCCUPIED and collections.Counter(self.neighbors)[State.OCCUPIED] >= 4:
+        elif (
+            self.state == State.OCCUPIED
+            and collections.Counter(self.neighbors)[State.OCCUPIED] >= 4
+        ):
             self.new_state = State.EMPTY
         else:
             self.new_state = copy.deepcopy(self.state)
@@ -94,7 +97,6 @@ class Seats:
         return num_occupied
 
 
-
 if __name__ == "__main__":
     with open("input.txt") as file:
         seats = Seats(grid=collections.defaultdict(dict))
@@ -112,5 +114,3 @@ if __name__ == "__main__":
     seats.set_maxes()
     seats.simulate()
     print(seats.count_occupied())
-    breakpoint()
-
